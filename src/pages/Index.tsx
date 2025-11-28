@@ -1,18 +1,33 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import React, { useState } from "react";
+import { AcStateProvider } from "@/state/ac-context";
+import HomeScreen from "./HomeScreen";
+import ControlsScreen from "./ControlsScreen";
+import DeviceInfoScreen from "./DeviceInfoScreen";
+import { TabBar } from "@/components/TabBar";
 
-import { MadeWithDyad } from "@/components/made-with-dyad";
+const tabScreens: Record<string, React.ReactNode> = {
+  home: <HomeScreen />,
+  controls: <ControlsScreen />,
+  device: <DeviceInfoScreen />,
+};
 
 const Index = () => {
+  const [tab, setTab] = useState<"home" | "controls" | "device">("home");
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">
-          Start building your amazing project here!
-        </p>
+    <AcStateProvider>
+      <div className="w-full min-h-screen bg-white flex flex-col items-center justify-between relative">
+        <header className="w-full py-4 bg-white shadow-sm border-b border-blue-100 text-center fixed top-0 left-0 z-40">
+          <span className="text-lg font-bold text-blue-700 tracking-wide">
+            Smart AC Remote Simulator
+          </span>
+        </header>
+        <main className="w-full pt-16 pb-20 flex-1 flex flex-col">
+          {tabScreens[tab]}
+        </main>
+        <TabBar current={tab} onChange={setTab} />
       </div>
-      <MadeWithDyad />
-    </div>
+    </AcStateProvider>
   );
 };
 
